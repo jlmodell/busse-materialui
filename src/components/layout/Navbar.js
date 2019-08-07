@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -13,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText
 } from "@material-ui/core";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
@@ -53,82 +55,83 @@ export function NavBar() {
   const classes = useStyles();
 
   const [state, setState] = useState({
-    left: false
+    drawer: false
   });
-
-  const toggleDrawer = (side, open) => e => {
-    if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
-      return;
-    }
-    setState({ ...state, [side]: open });
-  };
-
-  const sideList = side => (
-    <div
-      className={classes.list}
-      role='presentation'
-      onClick={toggleDrawer(side, false)}
-      onKeyDown={toggleDrawer(side, false)}
-    >
-      <List>
-        {[
-          { icon: <HomeIcon />, text: "Home", path: "Home" },
-          {
-            icon: <AccountBalanceIcon />,
-            text: "Customer Sales Analysis",
-            path: "/sales"
-          },
-          {
-            icon: <AccountBalanceIcon />,
-            text: "Item Sales Analysis",
-            path: "/items"
-          },
-          {
-            icon: <AccountBalanceIcon />,
-            text: "Pricing Tool",
-            path: "/prices"
-          }
-        ].map((t, i) => (
-          <ListItem button key={i} component={NavLink} to={t.path}>
-            <ListItemIcon>{t.icon}</ListItemIcon>
-            <ListItemText>{t.text}</ListItemText>
-          </ListItem>
-        ))}
-      </List>
-
-      <Button fullWidth variant='contained' className={classes.button}>
-        Login
-      </Button>
-    </div>
-  );
 
   return (
     <div className={classes.root}>
-      <AppBar position='static'>
+      <AppBar position="static">
         <Toolbar>
           <IconButton
-            edge='start'
+            edge="start"
             className={classes.menuButton}
-            color='inherit'
+            color="inherit"
+            onClick={() => setState({ ...state, drawer: !state.drawer })}
           >
-            <MenuIcon onClick={toggleDrawer("left", true)} />
+            <MenuIcon />
           </IconButton>
-          <Typography variant='h6'>Busse</Typography>
-          <Typography className={classes.title} variant='h6'>
+          <Typography variant="h6">Busse</Typography>
+          <Typography className={classes.title} variant="h6">
             Hospital Disposables
           </Typography>
           <Button
-            variant='contained'
+            variant="contained"
             className={classes.button}
-            component={NavLink}
-            to='/login'
+            component={Link}
+            to="/login"
           >
             Login
           </Button>
         </Toolbar>
       </AppBar>
-      <Drawer open={state.left} onClose={toggleDrawer("left", false)}>
-        {sideList("left")}
+      <Drawer
+        open={state.drawer}
+        onClose={() => setState({ ...state, drawer: !state.drawer })}
+      >
+        <div className={classes.list} role="presentation">
+          <List>
+            {[
+              { icon: <HomeIcon />, text: "Home", path: "/" },
+              {
+                icon: <AccountBalanceIcon />,
+                text: "Customer Sales Analysis",
+                path: "/sales"
+              },
+              {
+                icon: <AccountBalanceIcon />,
+                text: "Item Sales Analysis",
+                path: "/items"
+              },
+              {
+                icon: <AccountBalanceIcon />,
+                text: "Pricing Tool",
+                path: "/prices"
+              }
+            ].map((t, i) => (
+              <ListItem
+                button
+                key={i}
+                component={Link}
+                to={t.path}
+                onClick={() => setState({ ...state, drawer: !state.drawer })}
+              >
+                <ListItemIcon>{t.icon}</ListItemIcon>
+                <ListItemText>{t.text}</ListItemText>
+              </ListItem>
+            ))}
+          </List>
+
+          <Button
+            fullWidth
+            variant="contained"
+            component={Link}
+            to="/login"
+            className={classes.button}
+            onClick={() => setState({ ...state, drawer: !state.drawer })}
+          >
+            Login
+          </Button>
+        </div>
       </Drawer>
     </div>
   );
@@ -138,7 +141,7 @@ export function Footer() {
   const classes = useStyles();
   return (
     <div>
-      <AppBar position='fixed' className={classes.footer}>
+      <AppBar position="fixed" className={classes.footer}>
         <Typography className={classes.copyright}>&copy; 2019</Typography>
       </AppBar>
     </div>
