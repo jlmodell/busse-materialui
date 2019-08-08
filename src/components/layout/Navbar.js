@@ -93,6 +93,7 @@ const NavBar = props => {
               to="/"
               className={classes.button}
               onClick={() => {
+                localStorage.clear();
                 props.logout();
               }}
             >
@@ -169,6 +170,7 @@ const NavBar = props => {
               to="/register"
               className={classes.button}
               onClick={() => {
+                localStorage.clear();
                 props.logout();
                 setState({ ...state, drawer: !state.drawer });
               }}
@@ -197,6 +199,7 @@ const NavBar = props => {
 };
 
 const mapStateToProps = state => {
+  console.log(state);
   return { state };
 };
 

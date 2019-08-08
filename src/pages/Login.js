@@ -51,6 +51,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Login = withRouter(props => {
+  console.log(props);
+
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -71,7 +73,15 @@ const Login = withRouter(props => {
       })
       .then(res => {
         if (res.status === 201) {
-          localStorage.setItem("auth", res.data.token);
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem(
+            "tokenExpiration",
+            new Date(
+              new Date().setHours(
+                new Date().getHours() + res.data.tokenExpiration
+              )
+            )
+          );
           props.login(res.data.token);
           props.history.push("/");
         }

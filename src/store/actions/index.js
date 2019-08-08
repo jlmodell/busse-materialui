@@ -6,11 +6,12 @@ import {
   UPDATE_USER_EMAIL
 } from "../reducers";
 
-export const login = token => {
+export const login = (token, tokenExpiration) => {
   return {
     type: LOGIN,
     payload: {
-      token
+      token,
+      tokenExpiration
     }
   };
 };

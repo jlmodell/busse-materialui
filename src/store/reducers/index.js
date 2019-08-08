@@ -9,7 +9,8 @@ export const UPDATE_USER_PASSWORD = "UPDATE_USER_PASSWORD";
 const initialState = {
   email: null,
   password: null,
-  token: null,
+  token: localStorage.getItem("token") || null,
+  tokenExpiration: localStorage.getItem("tokenExpiration") || null,
   msg: null
 };
 
