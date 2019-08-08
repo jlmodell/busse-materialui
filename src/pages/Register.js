@@ -3,12 +3,52 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Typography,
+  Button,
+  Input,
+  InputLabel,
+  FormControl
+} from "@material-ui/core";
+
 import { register, userEmail, userPassword } from "../store/actions";
 
 const api = "https://busse-nestjs-api.herokuapp.com";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(4, 4)
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  input: {
+    flex: 1
+  },
+  formControl: {
+    margin: theme.spacing(1)
+  },
+  button: {
+    background: "teal",
+    color: "white",
+    marginRight: "1rem",
+    marginTop: "1rem"
+  },
+  typography: {
+    display: "flex",
+    justifyContent: "center"
+  },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center"
+  }
+}));
+
 const Register = withRouter(props => {
-  console.log(props);
+  const classes = useStyles();
+
   const user = {
     email: props.state.user.email,
     password: props.state.user.password
@@ -32,33 +72,46 @@ const Register = withRouter(props => {
   };
 
   return (
-    <div>
-      <h1>Register a new User</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          email
-          <input
-            type="email"
-            value={props.state.user.email}
-            onChange={e => props.userEmail(e.target.value)}
-          />
-        </label>
-        <label>
-          password
-          <input
-            type="password"
-            value={props.state.user.password}
-            onChange={e => props.userPassword(e.target.value)}
-          />
-        </label>
-        <button>Register</button>
+    <div className={classes.root}>
+      <Typography className={classes.typography} variant="h2">
+        Register
+      </Typography>
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="form-control">
+          <FormControl fullWidth>
+            <InputLabel>E-mail</InputLabel>
+            <Input
+              className={classes.input}
+              type="email"
+              id="email"
+              value={props.state.email}
+              onChange={e => props.userEmail(e.target.value)}
+            />
+          </FormControl>
+        </div>
+        <div className="form-control">
+          <FormControl fullWidth>
+            <InputLabel>Password</InputLabel>
+            <Input
+              className={classes.input}
+              type="password"
+              id="password"
+              value={props.state.password}
+              onChange={e => props.userPassword(e.target.value)}
+            />
+          </FormControl>
+        </div>
+        <div className={classes.buttonContainer}>
+          <Button type="submit" className={classes.button}>
+            Register
+          </Button>
+        </div>
       </form>
     </div>
   );
 });
 
 const mapStateToProps = state => {
-  console.log(state);
   return { state };
 };
 
