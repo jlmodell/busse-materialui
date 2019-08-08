@@ -1,37 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
+import { connect } from "react-redux";
+// import { withRouter } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-// useSelector,
-import { LOGIN } from "../store/reducers/authReducer";
+
+import { login, userEmail, userPassword } from "../store/actions";
 
 const api = "https://busse-nestjs-api.herokuapp.com";
 
-export default function Login() {
-  const [state, setState] = useState({
-    email: "",
-    password: ""
-  });
+// withRouter(({ history })
 
-  // const auth = useSelector(state => state.authReducer);
-  const dispatch = useDispatch();
+const Login = props => {
+  console.log(props);
+  const user = {
+    email: props.state.user.email,
+    password: props.state.user.password
+  };
+  console.log(user);
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    let creds = {
-      email: state.email,
-      password: state.password
-    };
-
-    console.log(creds);
-
     axios
-      .post(`${api}/users/login`, creds)
+      .post(`${api}/users/login`, {
+        ...user
+      })
       .then(res => {
         if (res.status === 201) {
-          let payload = res.data.token;
+          console.log(res.data);
           localStorage.setItem("auth", res.data.token);
-          dispatch({ type: LOGIN, payload });
+          props.login(res.data.token);
+          // history.push("/");
         }
       })
       .catch(err => console.log(err));
@@ -39,25 +37,36 @@ export default function Login() {
 
   return (
     <div>
+      <h1>Login Page</h1>
       <form onSubmit={handleSubmit}>
         <label>
           email
           <input
-            type="email"
-            value={state.email}
-            onChange={e => setState({ ...state, email: e.target.value })}
+            type='email'
+            value={props.state.email}
+            onChange={e => props.userEmail(e.target.value)}
           />
         </label>
         <label>
           password
           <input
-            type="password"
-            value={state.password}
-            onChange={e => setState({ ...state, password: e.target.value })}
+            type='password'
+            value={props.state.password}
+            onChange={e => props.userPassword(e.target.value)}
           />
         </label>
         <button>Login</button>
       </form>
     </div>
   );
-}
+};
+
+const mapStateToProps = state => {
+  console.log(state);
+  return { state };
+};
+
+export default connect(
+  mapStateToProps,
+  { login, userEmail, userPassword }
+)(Login);

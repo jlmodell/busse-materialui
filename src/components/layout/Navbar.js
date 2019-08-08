@@ -60,27 +60,35 @@ export function NavBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar>
           <IconButton
-            edge="start"
+            edge='start'
             className={classes.menuButton}
-            color="inherit"
+            color='inherit'
             onClick={() => setState({ ...state, drawer: !state.drawer })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">Busse</Typography>
-          <Typography className={classes.title} variant="h6">
+          <Typography variant='h6'>Busse</Typography>
+          <Typography className={classes.title} variant='h6'>
             Hospital Disposables
           </Typography>
           <Button
-            variant="contained"
+            variant='contained'
             className={classes.button}
             component={Link}
-            to="/login"
+            to='/login'
           >
             Login
+          </Button>
+          <Button
+            variant='contained'
+            className={classes.button}
+            component={Link}
+            to='/register'
+          >
+            Register
           </Button>
         </Toolbar>
       </AppBar>
@@ -88,7 +96,7 @@ export function NavBar() {
         open={state.drawer}
         onClose={() => setState({ ...state, drawer: !state.drawer })}
       >
-        <div className={classes.list} role="presentation">
+        <div className={classes.list} role='presentation'>
           <List>
             {[
               { icon: <HomeIcon />, text: "Home", path: "/" },
@@ -123,13 +131,23 @@ export function NavBar() {
 
           <Button
             fullWidth
-            variant="contained"
+            variant='contained'
             component={Link}
-            to="/login"
+            to='/login'
             className={classes.button}
             onClick={() => setState({ ...state, drawer: !state.drawer })}
           >
             Login
+          </Button>
+          <Button
+            fullWidth
+            variant='contained'
+            component={Link}
+            to='/register'
+            className={classes.button}
+            onClick={() => setState({ ...state, drawer: !state.drawer })}
+          >
+            Register
           </Button>
         </div>
       </Drawer>
@@ -141,7 +159,7 @@ export function Footer() {
   const classes = useStyles();
   return (
     <div>
-      <AppBar position="fixed" className={classes.footer}>
+      <AppBar position='fixed' className={classes.footer}>
         <Typography className={classes.copyright}>&copy; 2019</Typography>
       </AppBar>
     </div>
