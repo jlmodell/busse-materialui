@@ -63,34 +63,34 @@ const NavBar = props => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar>
           <IconButton
-            edge="start"
+            edge='start'
             className={classes.menuButton}
-            color="inherit"
+            color='inherit'
             onClick={() => setState({ ...state, drawer: !state.drawer })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">Busse</Typography>
-          <Typography className={classes.title} variant="h6">
+          <Typography variant='h6'>Busse</Typography>
+          <Typography className={classes.title} variant='h6'>
             Hospital Disposables
           </Typography>
           {!props.state.user.token ? (
             <Button
-              variant="contained"
+              variant='contained'
               className={classes.button}
               component={Link}
-              to="/login"
+              to='/login'
             >
               Login
             </Button>
           ) : (
             <Button
-              variant="contained"
+              variant='contained'
               component={Link}
-              to="/"
+              to='/'
               className={classes.button}
               onClick={() => {
                 localStorage.clear();
@@ -102,10 +102,10 @@ const NavBar = props => {
           )}
           {!props.state.user.token ? (
             <Button
-              variant="contained"
+              variant='contained'
               className={classes.button}
               component={Link}
-              to="/register"
+              to='/register'
             >
               Register
             </Button>
@@ -118,7 +118,7 @@ const NavBar = props => {
         open={state.drawer}
         onClose={() => setState({ ...state, drawer: !state.drawer })}
       >
-        <div className={classes.list} role="presentation">
+        <div className={classes.list} role='presentation'>
           <List>
             {[
               { icon: <HomeIcon />, text: "Home", path: "/" },
@@ -154,9 +154,9 @@ const NavBar = props => {
           {!props.state.user.token ? (
             <Button
               fullWidth
-              variant="contained"
+              variant='contained'
               component={Link}
-              to="/login"
+              to='/login'
               className={classes.button}
               onClick={() => setState({ ...state, drawer: !state.drawer })}
             >
@@ -165,9 +165,9 @@ const NavBar = props => {
           ) : (
             <Button
               fullWidth
-              variant="contained"
+              variant='contained'
               component={Link}
-              to="/register"
+              to='/register'
               className={classes.button}
               onClick={() => {
                 localStorage.clear();
@@ -181,9 +181,9 @@ const NavBar = props => {
           {!props.state.user.token ? (
             <Button
               fullWidth
-              variant="contained"
+              variant='contained'
               component={Link}
-              to="/register"
+              to='/register'
               className={classes.button}
               onClick={() => setState({ ...state, drawer: !state.drawer })}
             >
@@ -199,7 +199,6 @@ const NavBar = props => {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return { state };
 };
 
