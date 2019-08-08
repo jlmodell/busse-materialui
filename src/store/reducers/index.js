@@ -1,13 +1,16 @@
 import { combineReducers } from "redux";
 
 export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
+export const REGISTER = "REGISTER";
 export const UPDATE_USER_EMAIL = "UPDATE_USER_EMAIL";
 export const UPDATE_USER_PASSWORD = "UPDATE_USER_PASSWORD";
 
 const initialState = {
-  email: "",
-  password: "",
-  token: null
+  email: null,
+  password: null,
+  token: null,
+  msg: null
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -17,6 +20,15 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         token: action.payload.token,
         password: null
+      };
+    case LOGOUT:
+      return {
+        initialState
+      };
+    case REGISTER:
+      return {
+        ...state,
+        msg: action.payload.msg
       };
     case UPDATE_USER_EMAIL:
       return {

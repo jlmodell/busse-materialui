@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,6 +19,8 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+
+import { logout } from "../../store/actions";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export function NavBar() {
+const NavBar = props => {
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -60,43 +63,61 @@ export function NavBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position='static'>
+      <AppBar position="static">
         <Toolbar>
           <IconButton
-            edge='start'
+            edge="start"
             className={classes.menuButton}
-            color='inherit'
+            color="inherit"
             onClick={() => setState({ ...state, drawer: !state.drawer })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6'>Busse</Typography>
-          <Typography className={classes.title} variant='h6'>
+          <Typography variant="h6">Busse</Typography>
+          <Typography className={classes.title} variant="h6">
             Hospital Disposables
           </Typography>
-          <Button
-            variant='contained'
-            className={classes.button}
-            component={Link}
-            to='/login'
-          >
-            Login
-          </Button>
-          <Button
-            variant='contained'
-            className={classes.button}
-            component={Link}
-            to='/register'
-          >
-            Register
-          </Button>
+          {!props.state.user.token ? (
+            <Button
+              variant="contained"
+              className={classes.button}
+              component={Link}
+              to="/login"
+            >
+              Login
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              component={Link}
+              to="/"
+              className={classes.button}
+              onClick={() => {
+                props.logout();
+              }}
+            >
+              Logout
+            </Button>
+          )}
+          {!props.state.user.token ? (
+            <Button
+              variant="contained"
+              className={classes.button}
+              component={Link}
+              to="/register"
+            >
+              Register
+            </Button>
+          ) : (
+            ""
+          )}
         </Toolbar>
       </AppBar>
       <Drawer
         open={state.drawer}
         onClose={() => setState({ ...state, drawer: !state.drawer })}
       >
-        <div className={classes.list} role='presentation'>
+        <div className={classes.list} role="presentation">
           <List>
             {[
               { icon: <HomeIcon />, text: "Home", path: "/" },
@@ -129,39 +150,57 @@ export function NavBar() {
             ))}
           </List>
 
-          <Button
-            fullWidth
-            variant='contained'
-            component={Link}
-            to='/login'
-            className={classes.button}
-            onClick={() => setState({ ...state, drawer: !state.drawer })}
-          >
-            Login
-          </Button>
-          <Button
-            fullWidth
-            variant='contained'
-            component={Link}
-            to='/register'
-            className={classes.button}
-            onClick={() => setState({ ...state, drawer: !state.drawer })}
-          >
-            Register
-          </Button>
+          {!props.state.user.token ? (
+            <Button
+              fullWidth
+              variant="contained"
+              component={Link}
+              to="/login"
+              className={classes.button}
+              onClick={() => setState({ ...state, drawer: !state.drawer })}
+            >
+              Login
+            </Button>
+          ) : (
+            <Button
+              fullWidth
+              variant="contained"
+              component={Link}
+              to="/register"
+              className={classes.button}
+              onClick={() => {
+                props.logout();
+                setState({ ...state, drawer: !state.drawer });
+              }}
+            >
+              Logout
+            </Button>
+          )}
+          {!props.state.user.token ? (
+            <Button
+              fullWidth
+              variant="contained"
+              component={Link}
+              to="/register"
+              className={classes.button}
+              onClick={() => setState({ ...state, drawer: !state.drawer })}
+            >
+              Register
+            </Button>
+          ) : (
+            ""
+          )}
         </div>
       </Drawer>
     </div>
   );
-}
+};
 
-export function Footer() {
-  const classes = useStyles();
-  return (
-    <div>
-      <AppBar position='fixed' className={classes.footer}>
-        <Typography className={classes.copyright}>&copy; 2019</Typography>
-      </AppBar>
-    </div>
-  );
-}
+const mapStateToProps = state => {
+  return { state };
+};
+
+export default connect(
+  mapStateToProps,
+  { logout }
+)(NavBar);

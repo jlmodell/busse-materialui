@@ -1,21 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-// import { withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 
 import { login, userEmail, userPassword } from "../store/actions";
 
 const api = "https://busse-nestjs-api.herokuapp.com";
 
-// withRouter(({ history })
-
-const Login = props => {
-  console.log(props);
+const Login = withRouter(props => {
   const user = {
     email: props.state.user.email,
     password: props.state.user.password
   };
-  console.log(user);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -26,10 +22,9 @@ const Login = props => {
       })
       .then(res => {
         if (res.status === 201) {
-          console.log(res.data);
           localStorage.setItem("auth", res.data.token);
           props.login(res.data.token);
-          // history.push("/");
+          props.history.push("/");
         }
       })
       .catch(err => console.log(err));
@@ -42,7 +37,7 @@ const Login = props => {
         <label>
           email
           <input
-            type='email'
+            type="email"
             value={props.state.email}
             onChange={e => props.userEmail(e.target.value)}
           />
@@ -50,7 +45,7 @@ const Login = props => {
         <label>
           password
           <input
-            type='password'
+            type="password"
             value={props.state.password}
             onChange={e => props.userPassword(e.target.value)}
           />
@@ -59,7 +54,7 @@ const Login = props => {
       </form>
     </div>
   );
-};
+});
 
 const mapStateToProps = state => {
   console.log(state);

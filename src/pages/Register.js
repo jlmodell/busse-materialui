@@ -1,34 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
+import { connect } from "react-redux";
+
+import { register, userEmail, userPassword } from "../store/actions";
 
 const api = "https://busse-nestjs-api.herokuapp.com";
 
-export default withRouter(({ history }) => {
-  const [state, setState] = useState({
-    email: "",
-    password: ""
-  });
+const Register = withRouter(props => {
+  console.log(props);
+  const user = {
+    email: props.state.user.email,
+    password: props.state.user.password
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    console.log(state.email, state.password);
-
-    let body = {
-      email: state.email,
-      password: state.password
-    };
+    let success = "Successfully Registered. Please Log In";
+    let failure = "Email already exists.";
 
     axios
       .post(`${api}/users/register`, {
-        ...body
+        ...user
       })
       .then(res => {
-        console.log(res);
-        res.status === 201 && history.push("/login");
+        res.status === 201 && props.register() && alert(success);
       })
-      .catch(err => console.log(err));
+      .then(props.history.push("/login"))
+      .catch(err => alert(failure, err));
   };
 
   return (
@@ -38,17 +38,17 @@ export default withRouter(({ history }) => {
         <label>
           email
           <input
-            type='email'
-            value={state.email}
-            onChange={e => setState({ ...state, email: e.target.value })}
+            type="email"
+            value={props.state.user.email}
+            onChange={e => props.userEmail(e.target.value)}
           />
         </label>
         <label>
           password
           <input
-            type='password'
-            value={state.password}
-            onChange={e => setState({ ...state, password: e.target.value })}
+            type="password"
+            value={props.state.user.password}
+            onChange={e => props.userPassword(e.target.value)}
           />
         </label>
         <button>Register</button>
@@ -56,3 +56,13 @@ export default withRouter(({ history }) => {
     </div>
   );
 });
+
+const mapStateToProps = state => {
+  console.log(state);
+  return { state };
+};
+
+export default connect(
+  mapStateToProps,
+  { register, userEmail, userPassword }
+)(Register);
