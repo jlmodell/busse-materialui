@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -11,8 +11,6 @@ import {
   InputLabel,
   FormControl
 } from "@material-ui/core";
-
-import { register, userEmail, userPassword } from "../store/actions";
 
 const api = "https://busse-nestjs-api.herokuapp.com";
 
@@ -47,28 +45,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Register = withRouter(props => {
+  const [state, setState] = useState({
+    email: '',
+    password: '',
+  })
+  
   const classes = useStyles();
-
-  const user = {
-    email: props.state.user.email,
-    password: props.state.user.password
-  };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    let success = "Successfully Registered. Please Log In";
-    let failure = "Email already exists.";
-
+    const user = {
+      email: state.email,
+      password: state.password
+    };
+    
     axios
       .post(`${api}/users/register`, {
         ...user
       })
       .then(res => {
-        res.status === 201 && props.register() && alert(success);
+        if (res.status === 201) {
+          alert("Registered. Please Login.") 
+          props.history.push("/login")
+        } 
       })
-      .then(props.history.push("/login"))
-      .catch(err => alert(failure, err));
+      .catch(err => alert("Email exists."));
+
+    
   };
 
   return (
@@ -84,8 +88,8 @@ const Register = withRouter(props => {
               className={classes.input}
               type="email"
               id="email"
-              value={props.state.email}
-              onChange={e => props.userEmail(e.target.value)}
+              value={state.email}
+              onChange={e => setState({...state, email: e.target.value})}
             />
           </FormControl>
         </div>
@@ -96,11 +100,12 @@ const Register = withRouter(props => {
               className={classes.input}
               type="password"
               id="password"
-              value={props.state.password}
-              onChange={e => props.userPassword(e.target.value)}
+              value={state.password}
+              onChange={e => setState({...state, password: e.target.value})}
             />
           </FormControl>
-        </div>
+          </div>
+        
         <div className={classes.buttonContainer}>
           <Button type="submit" className={classes.button}>
             Register
@@ -117,5 +122,4 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { register, userEmail, userPassword }
 )(Register);

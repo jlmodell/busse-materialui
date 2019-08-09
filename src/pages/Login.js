@@ -16,7 +16,7 @@ import {
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
-import { login, userEmail, userPassword } from "../store/actions";
+import { login } from "../store/actions";
 
 const api = "https://busse-nestjs-api.herokuapp.com";
 
@@ -56,12 +56,14 @@ const Login = withRouter(props => {
   const classes = useStyles();
 
   const [state, setState] = useState({
-    showPassword: false
+    showPassword: false,
+    email: "",
+    password: ""
   });
 
   const user = {
-    email: props.state.user.email,
-    password: props.state.user.password
+    email: state.email,
+    password: state.password
   };
 
   const handleSubmit = e => {
@@ -74,14 +76,6 @@ const Login = withRouter(props => {
       .then(res => {
         if (res.status === 201) {
           localStorage.setItem("token", res.data.token);
-          localStorage.setItem(
-            "tokenExpiration",
-            new Date(
-              new Date().setHours(
-                new Date().getHours() + res.data.tokenExpiration
-              )
-            )
-          );
           props.login(res.data.token);
           props.history.push("/");
         }
@@ -91,35 +85,35 @@ const Login = withRouter(props => {
 
   return (
     <div className={classes.root}>
-      <Typography className={classes.typography} variant="h2">
+      <Typography className={classes.typography} variant='h2'>
         Login
       </Typography>
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <div className="form-control">
+      <form className='auth-form' onSubmit={handleSubmit}>
+        <div className='form-control'>
           <FormControl fullWidth>
             <InputLabel>E-mail</InputLabel>
             <Input
               className={classes.input}
-              type="email"
-              id="email"
-              value={props.state.email}
-              onChange={e => props.userEmail(e.target.value)}
+              type='email'
+              id='email'
+              value={state.email}
+              onChange={e => setState({ ...state, email: e.target.value })}
             />
           </FormControl>
         </div>
-        <div className="form-control">
+        <div className='form-control'>
           <FormControl fullWidth>
             <InputLabel>Password</InputLabel>
             <Input
               className={classes.input}
               type={state.showPassword ? "text" : "password"}
-              id="password"
-              value={props.state.password}
-              onChange={e => props.userPassword(e.target.value)}
+              id='password'
+              value={state.password}
+              onChange={e => setState({ ...state, password: e.target.value })}
               endAdornment={
-                <InputAdornment position="end">
+                <InputAdornment position='end'>
                   <IconButton
-                    aria-label="toggle password visibility"
+                    aria-label='toggle password visibility'
                     onClick={() =>
                       setState({ ...state, showPassword: !state.showPassword })
                     }
@@ -132,10 +126,10 @@ const Login = withRouter(props => {
           </FormControl>
         </div>
         <div className={classes.buttonContainer}>
-          <Button type="submit" className={classes.button}>
+          <Button type='submit' className={classes.button}>
             Login
           </Button>
-          <Button component={Link} to="/register" className={classes.button}>
+          <Button component={Link} to='/register' className={classes.button}>
             Register
           </Button>
         </div>
@@ -150,5 +144,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { login, userEmail, userPassword }
+  { login }
 )(Login);

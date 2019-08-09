@@ -7,6 +7,9 @@ import {
 } from "react-router-dom";
 import Layout from "./components/Layout";
 
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -36,6 +39,7 @@ const App = ({ state }) => {
   );
 
   return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
     <Router>
       <Layout>
         <Switch>
@@ -48,6 +52,7 @@ const App = ({ state }) => {
         </Switch>
       </Layout>
     </Router>
+    </MuiPickersUtilsProvider>
   );
 };
 
