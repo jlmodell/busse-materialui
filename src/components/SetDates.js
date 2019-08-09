@@ -28,8 +28,6 @@ const initialStartDate = new Date(currentYear, lastMonth - 1, 1);
 const SetDates = props => {
   const classes = useStyles();
 
-  console.log(props);
-
   return (
     <div className={classes.root}>
       <div className={classes.dateContainer}>
@@ -71,8 +69,8 @@ const SetDates = props => {
   );
 };
 
-const mapStateToProps = ({ sales }) => {
-  return { sales };
+const mapStateToProps = ({ sales, user }) => {
+  return { sales, user };
 };
 
 export default connect(
