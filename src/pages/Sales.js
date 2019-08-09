@@ -1,39 +1,12 @@
-import React, { useState } from "react";
-import {connect} from 'react-redux'
+import React from "react";
+import SetDates from "../components/SetDates";
+import Tables from "../components/Tables";
 
-import { DatePicker } from "@material-ui/pickers";
-
-const Sales = (props) => {
-  const [state, setState] = useState({
-    start: '',
-    end: ''
-  })
-  console.log(props, state)
-
+export default function Items() {
   return (
-    <>
-      <DatePicker
-        autoOk
-        variant="static"
-        openTo="date"
-        value={state.start}
-        onChange={(date) => setState({...state, start: date})}
-      />
-
-      <DatePicker
-        autoOk
-        orientation="static"
-        variant="static"
-        openTo="date"
-        value={state.end}
-        onChange={(date) => setState({...state, end: date})}
-      />
-    </>
+    <div>
+      <SetDates />
+      <Tables />
+    </div>
   );
-};
-
-const mapStateToProps = ({sales}) => {
-  return {sales}
 }
-
-export default connect(mapStateToProps)(Sales);

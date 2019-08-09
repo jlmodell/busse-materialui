@@ -3,7 +3,7 @@ export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 
 const initialState = {
-  token: localStorage.getItem("token") || null,
+  token: localStorage.getItem("token") || null
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -11,7 +11,7 @@ export const userReducer = (state = initialState, action) => {
     case LOGIN:
       return {
         ...state,
-        token: action.payload.token,
+        token: action.payload.token
       };
     case LOGOUT:
       return {

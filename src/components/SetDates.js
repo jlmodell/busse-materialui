@@ -1,0 +1,81 @@
+import React from "react";
+import { connect } from "react-redux";
+import { DatePicker } from "@material-ui/pickers";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+import { setStartDate, setEndDate } from "../store/actions";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(4, 4)
+  },
+  dateContainer: {
+    display: "flex",
+    justifyContent: "center"
+  },
+  individual: {
+    margin: "0 1rem"
+  }
+}));
+
+const currentYear = new Date().getFullYear();
+const lastMonth = new Date().getMonth();
+const maxDate = new Date(currentYear, lastMonth, 0);
+const minDate = new Date(2012, 1, 1);
+const initialStartDate = new Date(currentYear, lastMonth - 1, 1);
+
+const SetDates = props => {
+  const classes = useStyles();
+
+  console.log(props);
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.dateContainer}>
+        <DatePicker
+          className={classes.individual}
+          minDate={minDate}
+          maxDate={maxDate}
+          initialFocusedDate={initialStartDate}
+          autoOk
+          variant="dialog"
+          inputVariant="outlined"
+          label="Start"
+          openTo="date"
+          value={props.sales.start}
+          onChange={date => {
+            localStorage.setItem("start", date);
+            props.setStartDate(date);
+          }}
+        />
+
+        <DatePicker
+          className={classes.individual}
+          minDate={minDate}
+          maxDate={maxDate}
+          initialFocusedDate={maxDate}
+          autoOk
+          variant="dialog"
+          inputVariant="outlined"
+          label="End"
+          openTo="date"
+          value={props.sales.end}
+          onChange={date => {
+            localStorage.setItem("end", date);
+            props.setEndDate(date);
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const mapStateToProps = ({ sales }) => {
+  return { sales };
+};
+
+export default connect(
+  mapStateToProps,
+  { setStartDate, setEndDate }
+)(SetDates);
