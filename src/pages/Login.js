@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -17,8 +16,6 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import { login } from "../store/actions";
-
-const api = "https://busse-nestjs-api.herokuapp.com";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,16 +48,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Login = withRouter(props => {
-  console.log(props);
-
   const classes = useStyles();
-
   const [state, setState] = useState({
     showPassword: false,
     email: "",
     password: ""
   });
-
   const user = {
     email: state.email,
     password: state.password
@@ -68,19 +61,8 @@ const Login = withRouter(props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    axios
-      .post(`${api}/users/login`, {
-        ...user
-      })
-      .then(res => {
-        if (res.status === 201) {
-          localStorage.setItem("token", res.data.token);
-          props.login(res.data.token);
-          props.history.push("/");
-        }
-      })
-      .catch(err => console.log(err));
+    props.login(user) 
+    props.history.push("/");
   };
 
   return (
