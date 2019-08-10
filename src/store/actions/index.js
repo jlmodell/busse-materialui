@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { LOGIN, LOGOUT } from "../reducers/userReducer";
-import { SET_START, SET_END, REQUEST_DATA, DISTINCT_CUSTOMER_ARRAY, CUSTOMER_DETAILS_ARRAY } from "../reducers/salesReducer";
+import { SET_START, SET_END, REQUEST_DATA, DISTINCT_CUSTOMER_ARRAY, CUSTOMER_DETAILS_ARRAY, ITEMS_DETAILS_ARRAY, INDIVIDUAL_SALES } from "../reducers/salesReducer";
 
 // USERS
 
@@ -48,7 +48,7 @@ export const setEndDate = date => {
 
 // SALES => DATA
 
-export const fetchData = () => {
+export const fetchSalesData = () => {
   return function(dispatch, getState) {
     const { start, end } = getState().sales
     const { token } = getState().user
@@ -75,6 +75,52 @@ export const fetchData = () => {
   }
 }
 
+export const fetchItemsData = () => {
+  return function(dispatch, getState) {
+    const { start, end } = getState().sales
+    const { token } = getState().user
+
+    const startDate = new Date(start).toISOString().substring(0, 10);
+    const endDate = new Date(end).toISOString().substring(0, 10);
+
+    dispatch(requestData())
+
+    axios.get(`https://busse-nestjs-api.herokuapp.com/sales/distinct/item/${startDate}/${endDate}`, { headers: { Authorization: `Bearer ${token}` }})
+    .then(res => {
+      const distinctItems = res.data[0].item;
+      const promises = distinctItems.map(item => {
+        return axios.get(`https://busse-nestjs-api.herokuapp.com/sales/summary/item/${item.name.split("|")[0]}/${startDate}/${endDate}`, { headers: { Authorization: `Bearer ${token}` }})
+        .then(res => res.data)
+      })
+      Promise.all(promises).then(data => {
+        let objectArray = []
+        data.forEach(function(x){ objectArray.push(x[0])})
+        localStorage.setItem("itemDetailsArray", JSON.stringify(objectArray))
+        dispatch(itemsDetailsArray(objectArray))    
+      })
+    })
+  }
+}
+
+export const fetchIndividualSalesByCustomer = (cid) => {
+  return function(dispatch, getState) {
+    const { start, end } = getState().sales
+    const { token } = getState().user
+
+    const startDate = new Date(start).toISOString().substring(0, 10);
+    const endDate = new Date(end).toISOString().substring(0, 10);
+
+    dispatch(requestData())
+
+    axios.get(`https://busse-nestjs-api.herokuapp.com/sales/cust/${cid}/${startDate}/${endDate}`, { headers: { Authorization: `Bearer ${token}` }})
+    .then(res => {
+      const individualSales = res.data;
+      localStorage.setItem("individualSalesByCustomer", JSON.stringify(individualSales))
+      dispatch(individualItemsbyCustArray(individualSales))    
+    })
+  }
+}
+
 export const requestData = () => {
   return { type: REQUEST_DATA }
 }
@@ -93,3 +139,16 @@ export const customerDetailsArray = array => {
   }
 }
 
+export const itemsDetailsArray = array => {
+  return {
+    type: ITEMS_DETAILS_ARRAY,
+    payload: array
+  }
+}
+
+export const individualItemsbyCustArray = array => {
+  return {
+    type: INDIVIDUAL_SALES,
+    payload: array
+  }
+}

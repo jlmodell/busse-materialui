@@ -16,6 +16,7 @@ import Home from "./pages/Home";
 import Sales from "./pages/Sales";
 import Items from "./pages/Items";
 import Prices from "./pages/Prices";
+import IndividualByCustomer from './pages/IndividualByCustomer'
 
 import { connect } from "react-redux";
 
@@ -49,6 +50,7 @@ const App = ({ state }) => {
           <PrivateRoute path='/items' exact component={Items} />
           <PrivateRoute path='/sales' exact component={Sales} />
           <PrivateRoute path='/prices' exact component={Prices} />
+          <PrivateRoute path='/indivbycust' exact component={IndividualByCustomer} />
         </Switch>
       </Layout>
     </Router>

@@ -3,12 +3,10 @@ import { connect } from 'react-redux'
 import SetDates from "../components/SetDates";
 import Tables from "../components/Tables";
 
-import { fetchSalesData, fetchIndividualSalesByCustomer } from '../store/actions'
-
 const columns = [
   {
-    name: "_id.customer",
-    label: "Customers",
+    name: "_id.item",
+    label: "Item",
     options: {
       filter: true,
       sort: true,
@@ -16,7 +14,7 @@ const columns = [
   },
   {
     label: "ID",
-    name: "_id.cid",
+    name: "_id.iid",
     options: {
       filter: true
     }
@@ -51,27 +49,19 @@ const columns = [
   }
 ];
 
-const Sales = (props) => {
-  const { fetchSalesData } = props
+const IndividualByCustomer = (props) => {
 
   const options = {
     filter: true,
     filterType: "dropdown",
     responsive: "stacked",
-    onRowClick: (rowData, rowState) => {
-      props.fetchIndividualSalesByCustomer(rowData[1])
-      props.history.push({
-          pathname: `/indivbycust`,
-          state: {cid: rowData[1], cname: rowData[0]}
-      })
-    }
   };
 
   return (
     <div>
       <SetDates />
-      <button onClick={fetchSalesData}>Fetch Data</button>
-      {props.sales.loading ? "Loading..." : <Tables options={options} columns={columns} tableName="Sales" data={props.sales.customerDetails} />}
+
+      {props.sales.loading ? "Loading..." : <Tables columns={columns} options={options} tableName={props.location.state.cname ? props.location.state.cname : "UNDEFINED"} data={props.sales.individualSales} />}
     </div>
   );
 }
@@ -80,4 +70,4 @@ const mapStateToProps = ({sales}) => {
   return { sales }
 }
 
-export default connect(mapStateToProps, { fetchSalesData, fetchIndividualSalesByCustomer })(Sales)
+export default connect(mapStateToProps)(IndividualByCustomer)
