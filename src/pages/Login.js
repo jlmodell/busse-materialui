@@ -61,7 +61,7 @@ const Login = withRouter(props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    props.login(user) 
+    props.login(user);
     props.history.push("/");
   };
 
@@ -111,7 +111,12 @@ const Login = withRouter(props => {
           <Button type='submit' className={classes.button}>
             Login
           </Button>
-          <Button component={Link} to='/register' className={classes.button}>
+          <Button
+            disabled='true'
+            component={Link}
+            to='/register'
+            className={classes.button}
+          >
             Register
           </Button>
         </div>
