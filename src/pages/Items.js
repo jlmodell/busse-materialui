@@ -1,9 +1,23 @@
 import React from "react";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import SetDates from "../components/SetDates";
 import Tables from "../components/Tables";
 
-import { fetchItemsData } from '../store/actions'
+import { fetchItemsData, fetchIndividualSalesByItem } from "../store/actions";
+
+const useStyles = makeStyles(theme => ({
+  progress: {
+    margin: theme.spacing(2)
+  },
+  loaderDiv: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  }
+}));
 
 const columns = [
   {
@@ -11,7 +25,7 @@ const columns = [
     label: "Items",
     options: {
       filter: true,
-      sort: true,
+      sort: true
     }
   },
   {
@@ -51,33 +65,54 @@ const columns = [
   }
 ];
 
-const Items = (props) => {
-  const { fetchItemsData } = props
+const Items = props => {
+  const { fetchItemsData } = props;
+  const classes = useStyles();
 
   const options = {
     filter: true,
     filterType: "dropdown",
     responsive: "stacked",
     onRowClick: (rowData, rowState) => {
-      console.log(rowData, rowState)
+      props.fetchIndividualSalesByItem(rowData[1]);
       props.history.push({
-          pathname: `/indivbycust`,
-          state: {cid: '1300'}
-      })
+        pathname: `/indivbyitem`,
+        state: { iid: rowData[1], iname: rowData[0] }
+      });
     }
+  };
+
+  const renderLoader = () => {
+    return (
+      <div className={classes.loaderDiv}>
+        <CircularProgress className={classes.progress} />
+      </div>
+    );
   };
 
   return (
     <div>
       <SetDates />
       <button onClick={fetchItemsData}>Fetch Data</button>
-      {props.sales.loading ? "Loading..." : <Tables options={options} columns={columns} tableName="Items" data={props.sales.itemDetails} />}
+      {props.sales.loading ? (
+        renderLoader()
+      ) : (
+        <Tables
+          options={options}
+          columns={columns}
+          tableName='Items'
+          data={props.sales.itemDetails}
+        />
+      )}
     </div>
   );
-}
+};
 
-const mapStateToProps = ({sales}) => {
-  return { sales }
-}
+const mapStateToProps = ({ sales }) => {
+  return { sales };
+};
 
-export default connect(mapStateToProps, { fetchItemsData })(Items)
+export default connect(
+  mapStateToProps,
+  { fetchItemsData, fetchIndividualSalesByItem }
+)(Items);

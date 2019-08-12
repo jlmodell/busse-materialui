@@ -7,8 +7,8 @@ import {
 } from "react-router-dom";
 import Layout from "./components/Layout";
 
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -16,7 +16,8 @@ import Home from "./pages/Home";
 import Sales from "./pages/Sales";
 import Items from "./pages/Items";
 import Prices from "./pages/Prices";
-import IndividualByCustomer from './pages/IndividualByCustomer'
+import IndividualByCustomer from "./pages/IndividualByCustomer";
+import IndividualByItem from "./pages/IndividualByItem";
 
 import { connect } from "react-redux";
 
@@ -41,19 +42,28 @@ const App = ({ state }) => {
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-    <Router>
-      <Layout>
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <VisitorRoute path='/login' exact component={Login} />
-          <VisitorRoute path='/register' exact component={Register} />
-          <PrivateRoute path='/items' exact component={Items} />
-          <PrivateRoute path='/sales' exact component={Sales} />
-          <PrivateRoute path='/prices' exact component={Prices} />
-          <PrivateRoute path='/indivbycust' exact component={IndividualByCustomer} />
-        </Switch>
-      </Layout>
-    </Router>
+      <Router>
+        <Layout>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <VisitorRoute path='/login' exact component={Login} />
+            <VisitorRoute path='/register' exact component={Register} />
+            <PrivateRoute path='/items' exact component={Items} />
+            <PrivateRoute path='/sales' exact component={Sales} />
+            <PrivateRoute path='/prices' exact component={Prices} />
+            <PrivateRoute
+              path='/indivbycust'
+              exact
+              component={IndividualByCustomer}
+            />
+            <PrivateRoute
+              path='/indivbyitem'
+              exact
+              component={IndividualByItem}
+            />
+          </Switch>
+        </Layout>
+      </Router>
     </MuiPickersUtilsProvider>
   );
 };
