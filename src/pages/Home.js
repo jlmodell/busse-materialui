@@ -52,10 +52,10 @@ export default function Home() {
 
   const styles = {
     li: {
-      margin: "3rem 10rem"
+      margin: "3rem 3rem"
     },
     title: {
-      margin: "2rem 10rem"
+      margin: "2rem 3rem"
     }
   };
 

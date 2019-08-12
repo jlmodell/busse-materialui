@@ -13,7 +13,8 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Hidden
 } from "@material-ui/core";
 
 import MenuIcon from "@material-ui/icons/Menu";
@@ -78,37 +79,43 @@ const NavBar = props => {
             Hospital Disposables
           </Typography>
           {!props.state.user.token ? (
-            <Button
-              variant='contained'
-              className={classes.button}
-              component={Link}
-              to='/login'
-            >
-              Login
-            </Button>
+            <Hidden xsDown>
+              <Button
+                variant='contained'
+                className={classes.button}
+                component={Link}
+                to='/login'
+              >
+                Login
+              </Button>
+            </Hidden>
           ) : (
-            <Button
-              variant='contained'
-              component={Link}
-              to='/'
-              className={classes.button}
-              onClick={() => {
-                localStorage.clear();
-                props.logout();
-              }}
-            >
-              Logout
-            </Button>
+            <Hidden xsDown>
+              <Button
+                variant='contained'
+                component={Link}
+                to='/'
+                className={classes.button}
+                onClick={() => {
+                  localStorage.clear();
+                  props.logout();
+                }}
+              >
+                Logout
+              </Button>
+            </Hidden>
           )}
           {!props.state.user.token ? (
-            <Button
-              variant='contained'
-              className={classes.button}
-              component={Link}
-              to='/register'
-            >
-              Register
-            </Button>
+            <Hidden xsDown>
+              <Button
+                variant='contained'
+                className={classes.button}
+                component={Link}
+                to='/register'
+              >
+                Register
+              </Button>
+            </Hidden>
           ) : (
             ""
           )}
