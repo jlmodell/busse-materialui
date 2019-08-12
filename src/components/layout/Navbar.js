@@ -108,6 +108,7 @@ const NavBar = props => {
           {!props.state.user.token ? (
             <Hidden xsDown>
               <Button
+                disabled='true'
                 variant='contained'
                 className={classes.button}
                 component={Link}
@@ -187,6 +188,7 @@ const NavBar = props => {
           )}
           {!props.state.user.token ? (
             <Button
+              disabled='true'
               fullWidth
               variant='contained'
               component={Link}
