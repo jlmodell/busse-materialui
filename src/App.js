@@ -19,14 +19,21 @@ import Prices from "./pages/Prices";
 import IndividualByCustomer from "./pages/IndividualByCustomer";
 import IndividualByItem from "./pages/IndividualByItem";
 
+import { logout } from "./store/actions";
+
 import { connect } from "react-redux";
 
-const App = ({ state }) => {
+const App = ({ state, logout }) => {
   const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
       {...rest}
       render={props =>
-        state.user.token ? <Component {...props} /> : <Redirect to='/login' />
+        state.user.token &&
+        new Date(state.user.tokenDetails.expiresAt) > new Date() ? (
+          <Component {...props} />
+        ) : (
+          logout() && <Redirect to="/login" />
+        )
       }
     />
   );
@@ -35,7 +42,7 @@ const App = ({ state }) => {
     <Route
       {...rest}
       render={props =>
-        state.user.token ? <Redirect to='/' /> : <Component {...props} />
+        state.user.token ? <Redirect to="/" /> : <Component {...props} />
       }
     />
   );
@@ -45,19 +52,19 @@ const App = ({ state }) => {
       <Router>
         <Layout>
           <Switch>
-            <Route exact path='/' component={Home} />
-            <VisitorRoute path='/login' exact component={Login} />
-            <VisitorRoute path='/register' exact component={Register} />
-            <PrivateRoute path='/items' exact component={Items} />
-            <PrivateRoute path='/sales' exact component={Sales} />
-            <PrivateRoute path='/prices' exact component={Prices} />
+            <Route exact path="/" component={Home} />
+            <VisitorRoute path="/login" exact component={Login} />
+            <VisitorRoute path="/register" exact component={Register} />
+            <PrivateRoute path="/items" exact component={Items} />
+            <PrivateRoute path="/sales" exact component={Sales} />
+            <PrivateRoute path="/prices" exact component={Prices} />
             <PrivateRoute
-              path='/indivbycust'
+              path="/indivbycust"
               exact
               component={IndividualByCustomer}
             />
             <PrivateRoute
-              path='/indivbyitem'
+              path="/indivbyitem"
               exact
               component={IndividualByItem}
             />
@@ -74,4 +81,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(
+  mapStateToProps,
+  { logout }
+)(App);

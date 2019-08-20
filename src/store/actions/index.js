@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { LOGIN, LOGOUT } from "../reducers/userReducer";
+import { LOGIN, TOKEN_DETAILS, LOGOUT } from "../reducers/userReducer";
 import {
   SET_START,
   SET_END,
@@ -23,6 +23,9 @@ export const login = user => {
       }
     );
     await localStorage.setItem("token", res.data.token);
+    await localStorage.setItem("expiresAt", res.data.expiresAt);
+    await localStorage.setItem("createdAt", res.data.createdAt);
+    await dispatch(storeTokenDetails(res.data.createdAt, res.data.expiresAt));
     await dispatch(storeToken(res.data.token));
   };
 };
@@ -32,6 +35,16 @@ export const storeToken = token => {
     type: LOGIN,
     payload: {
       token
+    }
+  };
+};
+
+export const storeTokenDetails = (createdAt, expiresAt) => {
+  return {
+    type: TOKEN_DETAILS,
+    payload: {
+      createdAt,
+      expiresAt
     }
   };
 };

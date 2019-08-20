@@ -1,0 +1,27 @@
+table.tables {
+  border-collapse: collapse;
+  border: 1px solid;
+}
+table.tables td,
+table.tables th {
+  border: 1px solid black;
+}
+table.tables tr:first-child th {
+  border-top: 0;
+}
+table.tables tr:last-child td {
+  border-bottom: 0;
+}
+table.tables tr td:first-child,
+table.tables tr th:first-child {
+  border-left: 0;
+}
+table.tables tr td:last-child,
+table.tables tr th:last-child {
+  border-right: 0;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
