@@ -34,6 +34,13 @@ const columns = [
     }
   },
   {
+    label: "Total Rebates",
+    name: "rebates",
+    options: {
+      sort: true
+    }
+  },
+  {
     label: "Total Costs",
     name: "costs",
     options: {

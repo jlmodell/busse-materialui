@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import SetDates from "../components/SetDates";
 import Tables from "../components/Tables";
 
@@ -9,7 +9,7 @@ const columns = [
     label: "Item",
     options: {
       filter: true,
-      sort: true,
+      sort: true
     }
   },
   {
@@ -34,6 +34,13 @@ const columns = [
     }
   },
   {
+    label: "Total Rebates",
+    name: "rebates",
+    options: {
+      sort: true
+    }
+  },
+  {
     label: "Total Costs",
     name: "costs",
     options: {
@@ -49,25 +56,37 @@ const columns = [
   }
 ];
 
-const IndividualByCustomer = (props) => {
-
+const IndividualByCustomer = props => {
   const options = {
     filter: true,
     filterType: "dropdown",
-    responsive: "stacked",
+    responsive: "stacked"
   };
 
   return (
     <div>
       <SetDates />
 
-      {props.sales.loading ? "Loading..." : <Tables columns={columns} options={options} tableName={props.location.state.cname ? props.location.state.cname : "UNDEFINED"} data={props.sales.individualSales} />}
+      {props.sales.loading ? (
+        "Loading..."
+      ) : (
+        <Tables
+          columns={columns}
+          options={options}
+          tableName={
+            props.location.state.cname
+              ? props.location.state.cname
+              : "UNDEFINED"
+          }
+          data={props.sales.individualSales}
+        />
+      )}
     </div>
   );
-}
+};
 
-const mapStateToProps = ({sales}) => {
-  return { sales }
-}
+const mapStateToProps = ({ sales }) => {
+  return { sales };
+};
 
-export default connect(mapStateToProps)(IndividualByCustomer)
+export default connect(mapStateToProps)(IndividualByCustomer);

@@ -50,6 +50,13 @@ const columns = [
     }
   },
   {
+    label: "Total Rebates",
+    name: "rebates",
+    options: {
+      sort: true
+    }
+  },
+  {
     label: "Total Costs",
     name: "costs",
     options: {
@@ -100,7 +107,7 @@ const Items = props => {
         <Tables
           options={options}
           columns={columns}
-          tableName='Items'
+          tableName="Items"
           data={props.sales.itemDetails}
         />
       )}
