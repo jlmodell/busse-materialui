@@ -41,8 +41,15 @@ const columns = [
     }
   },
   {
-    label: "Total Costs",
+    label: "Total Mfg Costs",
     name: "costs",
+    options: {
+      sort: true
+    }
+  },
+  {
+    label: "Total Trade Discounts",
+    name: "currentTradeDiscounts",
     options: {
       sort: true
     }

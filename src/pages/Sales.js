@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import SetDates from "../components/SetDates";
@@ -42,35 +43,60 @@ const columns = [
     label: "Qty Sold",
     name: "quantity",
     options: {
-      sort: true
+      sort: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return value.toLocaleString();
+      }
     }
   },
   {
     label: "Total Sales",
     name: "sales",
     options: {
-      sort: true
+      sort: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return value.toLocaleString();
+      }
     }
   },
   {
     label: "Total Rebates",
     name: "rebates",
     options: {
-      sort: true
+      sort: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return value.toLocaleString();
+      }
     }
   },
   {
-    label: "Total Costs",
+    label: "Total Trade Discounts",
+    name: "currentTradeDiscounts",
+    options: {
+      sort: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return value.toLocaleString();
+      }
+    }
+  },
+  {
+    label: "Total Mfg Costs",
     name: "costs",
     options: {
-      sort: true
+      sort: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return value.toLocaleString();
+      }
     }
   },
   {
     label: "Gross Profit Margin",
     name: "grossProfitMargin",
     options: {
-      sort: true
+      sort: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return `${value}%`;
+      }
     }
   }
 ];
@@ -103,7 +129,11 @@ const Sales = props => {
   return (
     <div>
       <SetDates />
-      <button onClick={fetchSalesData}>Fetch Data</button>
+      <div className={classes.loaderDiv}>
+        <Button variant="outlined" onClick={fetchSalesData}>
+          Fetch Data
+        </Button>
+      </div>
       {props.sales.loading ? (
         renderLoader()
       ) : (
