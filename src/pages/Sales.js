@@ -45,7 +45,10 @@ const columns = [
     options: {
       sort: true,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return value.toLocaleString();
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        });
       }
     }
   },
@@ -55,7 +58,10 @@ const columns = [
     options: {
       sort: true,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return value.toLocaleString();
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
       }
     }
   },
@@ -65,7 +71,10 @@ const columns = [
     options: {
       sort: true,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return value.toLocaleString();
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
       }
     }
   },
@@ -75,7 +84,10 @@ const columns = [
     options: {
       sort: true,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return value.toLocaleString();
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
       }
     }
   },
@@ -85,7 +97,10 @@ const columns = [
     options: {
       sort: true,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return value.toLocaleString();
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
       }
     }
   },
@@ -95,7 +110,7 @@ const columns = [
     options: {
       sort: true,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return `${value}%`;
+        return parseFloat(value).toFixed(4) + "%";
       }
     }
   }

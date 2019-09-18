@@ -1,16 +1,25 @@
 import React from "react";
 
 export default function Home() {
-  const backend = "Built with nestjs <typescript>";
+  const backend =
+    "API built using nestjs framework <typescript>, data hosted using mongodb cloud atlas, multi-stage mongodb aggregations through nestjs";
   const frontend = [
     "react <framework>",
     "react-router-dom <routing>",
     "redux & react-redux <state management>",
     "@material-ui/core & @material-ui/icons <component elements>",
     "@MuiPicker <date picker>",
-    "MUIDataTable <tables>"
+    "MUIDataTable <tables>",
+    "secure json web token required for all requests"
   ];
   const data = [
+    {
+      version: "0.8.0",
+      description:
+        "Added many multi-stage aggregations to the nestjs backend to fetch more data per request.",
+      frontend: frontend.slice(0, 6),
+      backend
+    },
     {
       version: "0.5.0",
       description:

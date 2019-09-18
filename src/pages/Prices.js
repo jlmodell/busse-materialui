@@ -40,6 +40,7 @@ const Prices = props => {
 
   useEffect(() => {
     fetchDistributors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchDistributors = async () => {
@@ -71,9 +72,7 @@ const Prices = props => {
     );
 
     const avgPrice = await axios.get(
-      `https://busse-nestjs-api.herokuapp.com/sales/avg-price/${
-        state.distributor
-      }/${state.item}/${state.start}/${state.end}`,
+      `https://busse-nestjs-api.herokuapp.com/sales/avg-price/${state.distributor}/${state.item}/${state.start}/${state.end}`,
       {
         headers
       }

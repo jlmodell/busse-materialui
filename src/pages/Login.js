@@ -15,6 +15,8 @@ import {
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
+import SetDates from "../components/SetDates";
+
 import { login } from "../store/actions";
 
 const useStyles = makeStyles(theme => ({
@@ -43,7 +45,11 @@ const useStyles = makeStyles(theme => ({
   },
   buttonContainer: {
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginTop: "2rem"
+  },
+  dateContainer: {
+    marginTop: "2rem"
   }
 }));
 
@@ -71,6 +77,9 @@ const Login = withRouter(props => {
       <Typography className={classes.typography} variant="h2">
         Login
       </Typography>
+      <div className="dateContainer">
+        <SetDates />
+      </div>
       <form className="auth-form" onSubmit={handleSubmit}>
         <div className="form-control">
           <FormControl fullWidth>
@@ -109,7 +118,13 @@ const Login = withRouter(props => {
           </FormControl>
         </div>
         <div className={classes.buttonContainer}>
-          <Button type="submit" className={classes.button}>
+          <Button
+            type="submit"
+            className={classes.button}
+            disabled={
+              props.state.sales.start && props.state.sales.end ? "" : "true"
+            }
+          >
             Login
           </Button>
           <Button

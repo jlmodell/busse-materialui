@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import MUIDataTable from "mui-datatables";
-import { withRouter } from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -16,15 +16,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Sales = withRouter((props) => {
+const Sales = withRouter(props => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-
       <div className={classes.dataTable}>
         <MUIDataTable
-          title={`${props.tableName} List for period (${new Date(props.sales.start)
+          title={`${props.tableName} List for period (${new Date(
+            props.sales.start
+          )
             .toISOString()
             .substring(0, 10)} - ${new Date(props.sales.end)
             .toISOString()

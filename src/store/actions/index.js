@@ -5,7 +5,9 @@ import {
   SET_START,
   SET_END,
   REQUEST_DATA,
+  ITEM,
   DISTINCT_CUSTOMER_ARRAY,
+  DISTINCT_ITEM_ARRAY,
   CUSTOMER_DETAILS_ARRAY,
   ITEMS_DETAILS_ARRAY,
   INDIVIDUAL_SALES,
@@ -174,6 +176,28 @@ export const fetchIndividualSalesByItem = iid => {
   };
 };
 
+export const fetchDistinctItemsList = () => {
+  return function(dispatch, getState) {
+    const { start, end } = getState().sales;
+    const { token } = getState().user;
+
+    const startDate = new Date(start).toISOString().substring(0, 10);
+    const endDate = new Date(end).toISOString().substring(0, 10);
+
+    dispatch(requestData());
+
+    axios
+      .get(
+        `https://busse-nestjs-api.herokuapp.com/sales/distinct/item-list/${startDate}/${endDate}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then(res => {
+        const distinctItemsArray = res.data[0].item;
+        dispatch(distinctItemArray(distinctItemsArray));
+      });
+  };
+};
+
 export const requestData = () => {
   return { type: REQUEST_DATA };
 };
@@ -181,6 +205,13 @@ export const requestData = () => {
 export const distinctCustomerArray = array => {
   return {
     type: DISTINCT_CUSTOMER_ARRAY,
+    payload: array
+  };
+};
+
+export const distinctItemArray = array => {
+  return {
+    type: DISTINCT_ITEM_ARRAY,
     payload: array
   };
 };
@@ -212,3 +243,10 @@ export const individualSalesByItemArray = array => {
     payload: array
   };
 };
+
+export const itemSelected = iid => {
+  return {
+    type: ITEM,
+    payload: iid
+  }
+}
