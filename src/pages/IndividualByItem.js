@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import SetDates from "../components/SetDates";
 import Tables from "../components/Tables";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { Button, CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   progress: {
@@ -152,9 +153,21 @@ const IndividualByItem = props => {
     );
   };
 
+  const newTo = {
+    pathname: `/chart/${props.location.state.iname.replace("/", "")}/${
+      props.location.state.iid
+    }`,
+    iname: props.location.state.iname,
+    iid: props.location.state.iid
+  };
+
   return (
     <div>
       <SetDates />
+
+      <Link to={newTo} target="_blank">
+        <Button variant="outlined">Fetch Chart</Button>
+      </Link>
 
       {props.sales.loading ? (
         renderLoader()
@@ -163,9 +176,8 @@ const IndividualByItem = props => {
           columns={columns}
           options={options}
           tableName={
-            props.location.state.iname
-              ? props.location.state.iid + " | " + props.location.state.iname
-              : "UNDEFINED"
+            props.sales.individualItems &&
+            props.location.state.iid | props.location.state.iname
           }
           data={props.sales.individualItems}
         />

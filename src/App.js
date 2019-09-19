@@ -19,6 +19,7 @@ import Prices from "./pages/Prices";
 import IndividualByCustomer from "./pages/IndividualByCustomer";
 import IndividualByItem from "./pages/IndividualByItem";
 import SingleAnalysis from "./pages/SingleAnalysis";
+import Chart from "./pages/Chart";
 
 import { logout } from "./store/actions";
 
@@ -60,6 +61,7 @@ const App = ({ state, logout }) => {
             <PrivateRoute path="/sales" exact component={Sales} />
             <PrivateRoute path="/prices" exact component={Prices} />
             <PrivateRoute path="/single" exact component={SingleAnalysis} />
+            <PrivateRoute path="/chart/:name/:id" component={Chart} />
             <PrivateRoute
               path="/indivbycust"
               exact

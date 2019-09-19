@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { connect } from "react-redux";
+import axios from "axios";
+
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField } from "@material-ui/core/";
+import { TextField, Button } from "@material-ui/core/";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -29,9 +30,7 @@ const Selector = props => {
     start: new Date(props.sales.start).toISOString().substring(0, 10),
     end: new Date(props.sales.end).toISOString().substring(0, 10),
     token: props.user.token,
-    items: [],
-    label: props.label || "label",
-    helperText: props.helperText || "this is helper text"
+    items: []
   });
 
   const fetchItemList = (start, end, token) => {
@@ -41,30 +40,30 @@ const Selector = props => {
           Authorization: `Bearer ${token}`
         }
       })
-      .then(response => {
-        setState(prevState => ({ ...prevState, items: response.data[0].item }));
+      .then(res => {
+        setState(prevState => ({ ...prevState, items: res.data[0].item }));
       });
   };
 
-  useEffect(() => {
+  if (state.start && state.end && state.token) {
     fetchItemList(state.start, state.end, state.token);
-  }, [state.token, state.start, state.end]);
+  }
 
   return (
     <TextField
       id="outlined-select-currency-native"
       select
-      label={state.label}
+      label={props.label}
       className={classes.textField}
       value={props.item}
-      onChange={props.handleChange("item")} //temp
+      onChange={props.handleChange}
       SelectProps={{
         native: true,
         MenuProps: {
           className: classes.menu
         }
       }}
-      helperText={state.helperText}
+      helperText={props.helperText}
       margin="normal"
       variant="outlined"
     >

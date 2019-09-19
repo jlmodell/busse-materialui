@@ -18,6 +18,11 @@ const Chart = props => {
   };
   return (
     <div>
+      <div className="title" style={{ textAlign: "center" }}>
+        <h1>
+          {props.id} | {props.name}
+        </h1>
+      </div>
       <HorizontalBar data={data} width={500} height={700} />
     </div>
   );
