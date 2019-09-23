@@ -143,7 +143,7 @@ const NavBar = props => {
               {
                 icon: <AccountBalanceIcon />,
                 text: "Time Series by Item Tool",
-                path: "/single"
+                path: "/testing"
               }
             ].map((t, i) => (
               <ListItem

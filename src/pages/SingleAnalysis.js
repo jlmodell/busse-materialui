@@ -124,7 +124,6 @@ const SingleAnalysis = props => {
           Fetch Data
         </Button>
 
-        {loading && renderLoader()}
         <div className="container">{summary.length > 0 && renderTable()}</div>
       </div>
     </div>

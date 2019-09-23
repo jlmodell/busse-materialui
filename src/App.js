@@ -21,6 +21,9 @@ import IndividualByItem from "./pages/IndividualByItem";
 import SingleAnalysis from "./pages/SingleAnalysis";
 import Chart from "./pages/Chart";
 
+//testing
+import mobx from "./testing/mobx";
+
 import { logout } from "./store/actions";
 
 import { connect } from "react-redux";
@@ -55,6 +58,7 @@ const App = ({ state, logout }) => {
         <Layout>
           <Switch>
             <Route exact path="/" component={Home} />
+            <PrivateRoute exact path="/testing" component={mobx} />
             <VisitorRoute path="/login" exact component={Login} />
             <VisitorRoute path="/register" exact component={Register} />
             <PrivateRoute path="/items" exact component={Items} />
