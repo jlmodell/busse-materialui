@@ -9,6 +9,12 @@ const _salesSummaryByItemUrl =
   "https://busse-nestjs-api.herokuapp.com/sales/summary/item";
 const _fetchIndividualSalesByItemUrl =
   "https://busse-nestjs-api.herokuapp.com/sales/item";
+const _fetchIndividualSalesByCustUrl =
+  "https://busse-nestjs-api.herokuapp.com/sales/cust";
+const _fetchSalesDataUrl =
+  "https://busse-nestjs-api.herokuapp.com/sales/distinct/cust";
+const _fetchItemsDataUrl =
+  "https://busse-nestjs-api.herokuapp.com/sales/distinct/item";
 
 const currentYear = new Date().getFullYear();
 const lastMonth = new Date().getMonth();
@@ -21,6 +27,9 @@ export const sales = observable({
     sales.start = date;
     if (sales.item) {
       this.fetchSummary(sales.item);
+      this.fetchPeriodData();
+    } else {
+      this.fetchPeriodData();
     }
   },
   end: localStorage.getItem("end") || maxDate,
@@ -28,6 +37,9 @@ export const sales = observable({
     sales.end = date;
     if (sales.item) {
       this.fetchSummary(sales.item);
+      this.fetchPeriodData();
+    } else {
+      this.fetchPeriodData();
     }
   },
   get numOfDays() {
@@ -57,6 +69,8 @@ export const sales = observable({
       });
   },
   summary: [],
+  customerDetails: [],
+  itemDetails: [],
   individualItems: [],
   chartCustomers: [],
   chartSales: [],
@@ -100,11 +114,48 @@ export const sales = observable({
         })
       );
   },
-  customerDetails:
-    JSON.parse(localStorage.getItem("customerDetailsArray")) || [],
-  itemDetails: JSON.parse(localStorage.getItem("itemDetailsArray")) || [],
-  individualSales:
-    JSON.parse(localStorage.getItem("individualSalesByCustomer")) || [],
+  fetchPeriodData() {
+    sales.loading = true;
+
+    axios
+      .all([
+        axios.get(`${_fetchSalesDataUrl}/${sales.start}/${sales.end}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }),
+        axios.get(`${_fetchItemsDataUrl}/${sales.start}/${sales.end}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+      ])
+      .then(
+        axios.spread((salesData, itemsData) => {
+          sales.customerDetails = salesData.data;
+          sales.itemDetails = itemsData.data;
+
+          sales.loading = false;
+        })
+      );
+  },
+  individualSales: [],
+  fetchIndividualSalesByCust(cid) {
+    sales.loading = true;
+    axios
+      .get(
+        `${_fetchIndividualSalesByCustUrl}/${cid}/${sales.start}/${sales.end}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }
+      )
+      .then(res => {
+        sales.individualSales = res.data;
+        sales.loading = false;
+      });
+  },
   item: "",
   setItem(item) {
     sales.item = item;

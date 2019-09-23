@@ -23,6 +23,7 @@ import Chart from "./pages/Chart";
 
 //testing
 import mobx from "./testing/mobx";
+import Sales_MobX from "./testing/Sales_MobX";
 
 import { logout } from "./store/actions";
 
@@ -62,7 +63,7 @@ const App = ({ state, logout }) => {
             <VisitorRoute path="/login" exact component={Login} />
             <VisitorRoute path="/register" exact component={Register} />
             <PrivateRoute path="/items" exact component={Items} />
-            <PrivateRoute path="/sales" exact component={Sales} />
+            <PrivateRoute path="/sales" exact component={Sales_MobX} />
             <PrivateRoute path="/prices" exact component={Prices} />
             <PrivateRoute path="/single" exact component={SingleAnalysis} />
             <PrivateRoute path="/chart/:name/:id" component={Chart} />

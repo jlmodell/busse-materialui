@@ -3,7 +3,7 @@ import React from "react";
 import { observer } from "mobx-react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 
 import { sales } from "./store/mobx_sales";
 
@@ -50,7 +50,7 @@ const MobX = observer(() => {
           />
         </div>
 
-        {sales.loading && <CircularProgress />}
+        {sales.loading && <CircularProgress className={classes.progress} />}
 
         {!sales.loading && (
           <div className={classes.dataTable}>
