@@ -156,6 +156,22 @@ export const sales = observable({
         sales.loading = false;
       });
   },
+  fetchIndividualSalesByItem(iid) {
+    sales.loading = true;
+    axios
+      .get(
+        `${_fetchIndividualSalesByItemUrl}/${iid}/${sales.start}/${sales.end}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }
+      )
+      .then(res => {
+        sales.individualItems = res.data;
+        sales.loading = false;
+      });
+  },
   item: "",
   setItem(item) {
     sales.item = item;
@@ -163,6 +179,14 @@ export const sales = observable({
   customer: "",
   setCustomer(customer) {
     sales.customer = customer;
+  },
+  cid: "",
+  setCid(cid, customer) {
+    sales.cid = cid + " | " + customer;
+  },
+  iid: "",
+  setIid(iid, item) {
+    sales.iid = iid + " | " + item;
   },
   loading: false
 });

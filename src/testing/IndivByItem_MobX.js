@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 const columns = [
   {
     name: "_id.customer",
-    label: "Customers",
+    label: "Customer",
     options: {
       filter: true,
       sort: true
@@ -45,6 +45,32 @@ const columns = [
         return value.toLocaleString(undefined, {
           minimumFractionDigits: 0,
           maximumFractionDigits: 0
+        });
+      }
+    }
+  },
+  {
+    label: "Avg Price Sold",
+    name: "avgPrice",
+    options: {
+      sort: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      }
+    }
+  },
+  {
+    label: "Avg Price After Rebates",
+    name: "afterRebateAvgPrice",
+    options: {
+      sort: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
         });
       }
     }
@@ -76,8 +102,8 @@ const columns = [
     }
   },
   {
-    label: "Total Trade Discounts",
-    name: "currentTradeDiscounts",
+    label: "Total Mfg Costs",
+    name: "costs",
     options: {
       sort: true,
       customBodyRender: (value, tableMeta, updateValue) => {
@@ -89,8 +115,8 @@ const columns = [
     }
   },
   {
-    label: "Total Mfg Costs",
-    name: "costs",
+    label: "Total Trade Discounts",
+    name: "currentTradeDiscounts",
     options: {
       sort: true,
       customBodyRender: (value, tableMeta, updateValue) => {
@@ -113,41 +139,27 @@ const columns = [
   }
 ];
 
-const Sales = observer(props => {
+const IndividualByItem = observer(props => {
   const classes = useStyles();
   const store = sales;
 
   const options = {
     filter: true,
     filterType: "dropdown",
-    responsive: "stacked",
-    onRowClick: (rowData, rowState) => {
-      store.fetchIndividualSalesByCust(rowData[1]);
-      store.setCid(rowData[1], rowData[0]);
-      props.history.push({
-        pathname: `/indivbycust`,
-        state: { cid: rowData[1], cname: rowData[0] }
-      });
-    }
+    responsive: "stacked"
   };
-
-  React.useEffect(() => {
-    if (store.start && store.end) {
-      store.fetchPeriodData();
-    }
-  }, []);
 
   return (
     <div>
       <SetDates />
       <div className={classes.loaderDiv}>
         {store.loading && <CircularProgress className={classes.progress} />}
-        {!store.loading && store.customerDetails && (
+        {!store.loading && store.individualItems && (
           <MuiDataTable
-            options={options}
             columns={columns}
-            tableName="Sales"
-            data={store.customerDetails}
+            options={options}
+            tableName={store.iid}
+            data={store.individualItems}
           />
         )}
       </div>
@@ -155,4 +167,4 @@ const Sales = observer(props => {
   );
 });
 
-export default Sales;
+export default IndividualByItem;

@@ -1,9 +1,13 @@
 import React from "react";
-import { connect } from "react-redux";
+import { observer } from "mobx-react";
+
 import { makeStyles } from "@material-ui/core/styles";
-import SetDates from "../components/SetDates";
-import Tables from "../components/Tables";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
+import SetDates from "./components/SetDates_MobX";
+import MuiDataTable from "./components/Tables_MobX";
+import { CircularProgress } from "@material-ui/core";
+
+import { sales } from "./store/mobx_sales";
 
 const useStyles = makeStyles(theme => ({
   progress: {
@@ -135,8 +139,9 @@ const columns = [
   }
 ];
 
-const IndividualByCustomer = props => {
+const IndividualByCustomer = observer(props => {
   const classes = useStyles();
+  const store = sales;
 
   const options = {
     filter: true,
@@ -144,38 +149,22 @@ const IndividualByCustomer = props => {
     responsive: "stacked"
   };
 
-  const renderLoader = () => {
-    return (
-      <div className={classes.loaderDiv}>
-        <CircularProgress className={classes.progress} />
-      </div>
-    );
-  };
-
   return (
     <div>
       <SetDates />
-
-      {props.sales.loading ? (
-        renderLoader()
-      ) : (
-        <Tables
-          columns={columns}
-          options={options}
-          tableName={
-            props.location.state.cname
-              ? props.location.state.cid + " | " + props.location.state.cname
-              : "UNDEFINED"
-          }
-          data={props.sales.individualSales}
-        />
-      )}
+      <div className={classes.loaderDiv}>
+        {store.loading && <CircularProgress className={classes.progress} />}
+        {!store.loading && store.individualSales && (
+          <MuiDataTable
+            columns={columns}
+            options={options}
+            tableName={store.cid}
+            data={store.individualSales}
+          />
+        )}
+      </div>
     </div>
   );
-};
+});
 
-const mapStateToProps = ({ sales }) => {
-  return { sales };
-};
-
-export default connect(mapStateToProps)(IndividualByCustomer);
+export default IndividualByCustomer;

@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
 
 const columns = [
   {
-    name: "_id.customer",
-    label: "Customers",
+    name: "_id.item",
+    label: "Items",
     options: {
       filter: true,
       sort: true
@@ -31,7 +31,7 @@ const columns = [
   },
   {
     label: "ID",
-    name: "_id.cid",
+    name: "_id.iid",
     options: {
       filter: true
     }
@@ -76,20 +76,7 @@ const columns = [
     }
   },
   {
-    label: "Total Trade Discounts",
-    name: "currentTradeDiscounts",
-    options: {
-      sort: true,
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return value.toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
-      }
-    }
-  },
-  {
-    label: "Total Mfg Costs",
+    label: "Total Costs",
     name: "costs",
     options: {
       sort: true,
@@ -113,7 +100,7 @@ const columns = [
   }
 ];
 
-const Sales = observer(props => {
+const Items = observer(props => {
   const classes = useStyles();
   const store = sales;
 
@@ -122,11 +109,11 @@ const Sales = observer(props => {
     filterType: "dropdown",
     responsive: "stacked",
     onRowClick: (rowData, rowState) => {
-      store.fetchIndividualSalesByCust(rowData[1]);
-      store.setCid(rowData[1], rowData[0]);
+      store.fetchIndividualSalesByItem(rowData[1]);
+      store.setIid(rowData[1], rowData[0]);
       props.history.push({
-        pathname: `/indivbycust`,
-        state: { cid: rowData[1], cname: rowData[0] }
+        pathname: `/indivbyitem`,
+        state: { iid: rowData[1], iname: rowData[0] }
       });
     }
   };
@@ -142,12 +129,12 @@ const Sales = observer(props => {
       <SetDates />
       <div className={classes.loaderDiv}>
         {store.loading && <CircularProgress className={classes.progress} />}
-        {!store.loading && store.customerDetails && (
+        {!store.loading && store.itemDetails && (
           <MuiDataTable
             options={options}
             columns={columns}
-            tableName="Sales"
-            data={store.customerDetails}
+            tableName="Items"
+            data={store.itemDetails}
           />
         )}
       </div>
@@ -155,4 +142,4 @@ const Sales = observer(props => {
   );
 });
 
-export default Sales;
+export default Items;
