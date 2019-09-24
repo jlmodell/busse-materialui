@@ -7,11 +7,15 @@ export const users = observable({
   email: "",
   password: "",
   error: "",
-  setEmail(e) {
-    users.email = e;
+  setEmail(email) {
+    users.email = email;
   },
-  setPassword(p) {
-    users.password = p;
+  setPassword(password) {
+    users.password = password;
+  },
+  onClear() {
+    users.email = "";
+    users.password = "";
   },
   token: localStorage.getItem("token") || null,
   createdAt: localStorage.getItem("createdAt") || null,
@@ -23,6 +27,8 @@ export const users = observable({
         password: users.password
       })
       .then(res => {
+        users.error = "";
+        localStorage.clear();
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("expiresAt", res.data.expiresAt);
         localStorage.setItem("createdAt", res.data.createdAt);
@@ -31,7 +37,7 @@ export const users = observable({
         users.expiresAt = res.data.expiresAt;
       })
       .catch(err => {
-        users.error = `Error: ${err}`;
+        users.error = `${err}`;
       });
   },
   logout() {

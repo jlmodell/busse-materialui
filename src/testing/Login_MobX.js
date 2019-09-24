@@ -1,8 +1,6 @@
 import React from "react";
-import dvr from 'mobx-react-form/lib/validators/DVR'
-import validatorjs from 'validatorjs'
 import { observer } from "mobx-react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -41,6 +39,11 @@ const useStyles = makeStyles(theme => ({
     marginRight: "1rem",
     marginTop: "1rem"
   },
+  clearButton: {
+    color: "teal",
+    marginRight: "1rem",
+    marginTop: "1rem"
+  },
   typography: {
     display: "flex",
     justifyContent: "center"
@@ -55,109 +58,99 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const plugins = {
-    dvr: dvr(validatorjs)
-}
+const Login = observer(() => {
+  const classes = useStyles();
+  const store = users;
+  const salesStore = sales;
 
-const fields = {
-    email: {
-        label: 'Email',
-        placeholder: 'Enter your complete Email',
-        rules: 'required|email|string',
-    },
-    password: {
-        label: 'Password',
-        placeholder: 'Enter your Password',
-        rules: 'required|string'
-    }
-}
+  const handleSubmit = async e => {
+    e.preventDefault();
+    await store.login();
+    console.log(store.token);
+  };
 
-const h
-
-const Login = observer(
-  withRouter(props => {
-    const classes = useStyles();
-    const store = users;
-    const salesStore = sales;
-
-    const handleSubmit = e => {
-      e.preventDefault();
-      localStorage.clear();
-      store.login();
-    };
-
-    return (
-      <div className={classes.root}>
-        <Typography className={classes.typography} variant="h2">
-          Login
-        </Typography>
-        <div className="dateContainer">
-          <SetDates />
-        </div>
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="form-control">
-            <FormControl fullWidth>
-              <InputLabel>E-mail</InputLabel>
-              <Input
-                className={classes.input}
-                type="email"
-                id="email"
-                value={store.email}
-                onChange={e => store.setEmail(e.target.value)}
-              />
-            </FormControl>
-          </div>
-          <div className="form-control">
-            <FormControl fullWidth>
-              <InputLabel>Password</InputLabel>
-              <Input
-                className={classes.input}
-                type={store.showPassword ? "text" : "password"}
-                id="password"
-                value={store.password}
-                onChange={e => store.setPassword(e.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => store.setShowPassword()}
-                    >
-                      {store.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </div>
-          <div className={classes.buttonContainer}>
-            <Button
-              type="submit"
-              className={classes.button}
-              disabled={
-                store.email &&
-                store.password &&
-                salesStore.start &&
-                salesStore.end
-                  ? ""
-                  : "true"
-              }
-            >
-              Login
-            </Button>
-            <Button
-              disabled="true"
-              component={Link}
-              to="/register"
-              className={classes.button}
-            >
-              Register
-            </Button>
-          </div>
-        </form>
-        {store.error && <p>{store.error}</p>}
+  return (
+    <div className={classes.root}>
+      <Typography className={classes.typography} variant="h2">
+        Login
+      </Typography>
+      <div className="dateContainer">
+        <SetDates />
       </div>
-    );
-  })
-);
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="form-control">
+          <FormControl fullWidth>
+            <InputLabel>E-mail</InputLabel>
+            <Input
+              className={classes.input}
+              type="email"
+              id="email"
+              value={store.email}
+              placeholder="Enter a valid e-mail"
+              onChange={e => store.setEmail(e.target.value)}
+            />
+          </FormControl>
+        </div>
+        <div className="form-control">
+          <FormControl fullWidth>
+            <InputLabel>Password</InputLabel>
+            <Input
+              className={classes.input}
+              type={store.showPassword ? "text" : "password"}
+              id="password"
+              value={store.password}
+              placeholder="Enter your password"
+              onChange={e => store.setPassword(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => store.setShowPassword()}
+                  >
+                    {store.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        </div>
+        <div className={classes.buttonContainer}>
+          <Button
+            type="submit"
+            className={classes.button}
+            // component={Link}
+            // to={store.redirect}
+            disabled={
+              store.email &&
+              store.password &&
+              salesStore.start &&
+              salesStore.end
+                ? ""
+                : "true"
+            }
+          >
+            Login
+          </Button>
+          <Button
+            disabled="true"
+            component={Link}
+            to="/register"
+            className={classes.button}
+          >
+            Register
+          </Button>
+          <Button
+            type="button"
+            className={classes.clearButton}
+            onClick={store.onClear}
+          >
+            Clear
+          </Button>
+        </div>
+      </form>
+      <p>{store.error && alert(store.error)}</p>
+    </div>
+  );
+});
 
 export default Login;
