@@ -1,11 +1,12 @@
 import React from "react";
-
+import { navigate } from "@reach/router";
 import { observer } from "mobx-react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 
 import { sales } from "./store/mobx_sales";
+import { users } from "./store/mobx_users";
 
 import SetDates from "./components/SetDates_MobX";
 import Selector from "./components/Selector_MobX";
@@ -34,10 +35,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const MobX = observer(() => {
+const ItemReview = observer(() => {
   const classes = useStyles();
   const store = sales;
+  const user = users;
 
+  if (!user.token) {
+    navigate("/login");
+  }
   return (
     <div>
       <SetDates />
@@ -74,4 +79,4 @@ const MobX = observer(() => {
   );
 });
 
-export default MobX;
+export default ItemReview;

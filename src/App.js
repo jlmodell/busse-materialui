@@ -11,7 +11,7 @@ import Layout from "./components/Layout";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import Login from "./pages/Login";
+// import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 // import Sales from "./pages/Sales";

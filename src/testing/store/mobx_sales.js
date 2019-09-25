@@ -22,10 +22,17 @@ const maxDate = new Date(currentYear, lastMonth, 0);
 const minDate = new Date(currentYear, lastMonth - 1, 1);
 
 export const sales = observable({
+  get token() {
+    return localStorage.getItem("token");
+  },
   start: localStorage.getItem("start") || minDate,
   setStart(date) {
     sales.start = date;
-    if (sales.item) {
+    if (
+      new Date(sales.start) < new Date(sales.end) &&
+      sales.token &&
+      sales.item
+    ) {
       this.fetchSummary(sales.item);
       this.fetchPeriodData();
     } else {
@@ -35,7 +42,11 @@ export const sales = observable({
   end: localStorage.getItem("end") || maxDate,
   setEnd(date) {
     sales.end = date;
-    if (sales.item) {
+    if (
+      new Date(sales.start) < new Date(sales.end) &&
+      sales.item &&
+      sales.token
+    ) {
       this.fetchSummary(sales.item);
       this.fetchPeriodData();
     } else {
@@ -50,23 +61,29 @@ export const sales = observable({
   },
   distinctCustomersArray: [],
   distinctCustomers() {
-    axios
-      .get(`${distinctCustomers_url}/${sales.start}/${sales.end}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      })
-      .then(res => {
-        sales.distinctCustomersArray = res.data[0].customer;
-      });
+    if (sales.token) {
+      axios
+        .get(`${distinctCustomers_url}/${sales.start}/${sales.end}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        })
+        .then(res => {
+          sales.distinctCustomersArray = res.data[0].customer;
+        });
+    }
+    sales.distinctCustomersArray = [];
   },
   distinctItemsArray: [],
   distinctItems() {
-    axios
-      .get(`${distinctItems_url}/${sales.start}/${sales.end}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      })
-      .then(res => {
-        sales.distinctItemsArray = res.data[0].item;
-      });
+    if (sales.token) {
+      axios
+        .get(`${distinctItems_url}/${sales.start}/${sales.end}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        })
+        .then(res => {
+          sales.distinctItemsArray = res.data[0].item;
+        });
+    }
+    sales.distinctItemsArray = [];
   },
   summary: [],
   customerDetails: [],

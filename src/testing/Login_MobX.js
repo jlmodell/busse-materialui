@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "@reach/router";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -63,10 +63,9 @@ const Login = observer(() => {
   const store = users;
   const salesStore = sales;
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    await store.login();
-    console.log(store.token);
+    store.login();
   };
 
   return (

@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button } from "@material-ui/core/";
+import { TextField } from "@material-ui/core/";
 
 import { sales } from "../store/mobx_sales";
 
@@ -28,8 +28,10 @@ const Selector = observer(props => {
   const store = sales;
 
   React.useEffect(() => {
-    store.distinctItems();
-  }, []);
+    if (store.end && store.start && store.token) {
+      store.distinctItems();
+    }
+  }, [store]);
 
   const handleChange = e => {
     store.setItem(e.target.value);

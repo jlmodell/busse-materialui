@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
+import { navigate } from "@reach/router";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -8,6 +9,7 @@ import MuiDataTable from "./components/Tables_MobX";
 import { CircularProgress } from "@material-ui/core";
 
 import { sales } from "./store/mobx_sales";
+import { users } from "./store/mobx_users";
 
 const useStyles = makeStyles(theme => ({
   progress: {
@@ -142,6 +144,13 @@ const columns = [
 const IndividualByItem = observer(props => {
   const classes = useStyles();
   const store = sales;
+  const user = users;
+
+  React.useEffect(() => {
+    if (!user.token) {
+      navigate("/login");
+    }
+  }, [user]);
 
   const options = {
     filter: true,

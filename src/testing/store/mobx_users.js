@@ -1,4 +1,5 @@
 import { observable } from "mobx";
+import { navigate } from "@reach/router";
 import axios from "axios";
 
 const _url = "https://busse-nestjs-api.herokuapp.com/users/login";
@@ -35,6 +36,9 @@ export const users = observable({
         users.token = res.data.token;
         users.createdAt = res.data.createdAt;
         users.expiresAt = res.data.expiresAt;
+      })
+      .then(() => {
+        navigate("/");
       })
       .catch(err => {
         users.error = `${err}`;
