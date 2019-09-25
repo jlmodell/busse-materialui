@@ -40,9 +40,13 @@ const ItemReview = observer(() => {
   const store = sales;
   const user = users;
 
-  if (!user.token) {
-    navigate("/login");
-  }
+  React.useEffect(() => {
+    user.expireToken();
+    if (!user.token) {
+      navigate("/login");
+    }
+  }, [user]);
+
   return (
     <div>
       <SetDates />

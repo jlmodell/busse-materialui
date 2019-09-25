@@ -147,6 +147,7 @@ const IndividualByItem = observer(props => {
   const user = users;
 
   React.useEffect(() => {
+    user.expireToken();
     if (!user.token) {
       navigate("/login");
     }

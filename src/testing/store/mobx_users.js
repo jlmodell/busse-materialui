@@ -50,6 +50,12 @@ export const users = observable({
     users.createdAt = localStorage.getItem("createdAt") || null;
     users.expiresAt = localStorage.getItem("expiresAt") || null;
   },
+  expireToken() {
+    if (new Date() > new Date(users.expiresAt)) {
+      this.logout();
+      navigate("/login");
+    }
+  },
   showPassword: false,
   setShowPassword() {
     users.showPassword = !users.showPassword;
